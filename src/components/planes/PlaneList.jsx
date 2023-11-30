@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import PlaneListItem from "./PlaneListItem";
 
-const PlanesList = () => {
-  //   const [planes, setPlanes] = useState([]);
+const PlaneList = () => {
+  const [planes, setPlanes] = useState([]);
 
   //   useEffect(() => {
   //     fetch("http://localhost:9999/api/planes")
@@ -9,19 +10,22 @@ const PlanesList = () => {
   //       .then((data) => console.log(data));
   //   });
 
-  //   if (planes.lenght === 0) {
-  //     return (
-  //       <section>
-  //         <p>Keine Flugzeuge</p>
-  //       </section>
-  //     );
-  //   }
-
-  return (
-    <section>
-      <h2 className="bg-red-300">Unsere List</h2>
-    </section>
-  );
+  if (planes.length === 0) {
+    return (
+      <section className="h-full flex justify-center items-center">
+        <p className="text-xl">Keine Flugzeuge im System</p>
+      </section>
+    );
+  } else {
+    return (
+      <section>
+        <h2>test2</h2>
+        {planes.map((plane, key) => (
+          <PlaneListItem key={plane.id} plane={plane} />
+        ))}
+      </section>
+    );
+  }
 };
 
-export default PlanesList;
+export default PlaneList;

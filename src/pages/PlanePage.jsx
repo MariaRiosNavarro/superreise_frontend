@@ -1,12 +1,9 @@
-import PlanesList from "../components/planes/PlaneList.jsx";
-import PlaneAdd from "../components/planes/PlaneAdd.jsx";
+import PlaneList from "../components/planes/PlaneList";
 
 const PlanePage = () => {
   return (
-    <main>
-      <h1>Unsere Flugzeuge</h1>
-      <PlanesList />
-      <PlaneAdd />
+    <main className="bg-slate-300 h-screen">
+      <PlaneList />
     </main>
   );
 };
