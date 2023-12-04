@@ -1,15 +1,6 @@
-import { useEffect, useState } from "react";
 import PlaneListItem from "./PlaneListItem";
 
-const PlaneList = () => {
-  const [planes, setPlanes] = useState([]);
-
-  //   useEffect(() => {
-  //     fetch("http://localhost:9999/api/planes")
-  //       .then((response) => response.json())
-  //       .then((data) => console.log(data));
-  //   });
-
+const PlaneList = ({ planes, setRefresh }) => {
   if (planes.length === 0) {
     return (
       <section className="h-full flex justify-center items-center">
@@ -18,9 +9,9 @@ const PlaneList = () => {
     );
   } else {
     return (
-      <section>
-        <h2>test2</h2>
-        {planes.map((plane, key) => (
+      <section className="mx-24 py-8">
+        <h2 className="py-8 text-3xl">Flugzeugliste</h2>
+        {planes.map((plane) => (
           <PlaneListItem key={plane.id} plane={plane} />
         ))}
       </section>

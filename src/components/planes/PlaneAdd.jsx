@@ -1,60 +1,105 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-const PlaneAdd = () => {
+const PlaneAdd = ({ setRefresh }) => {
+  const [error, setError] = useState(false);
+
   const idRef = useRef();
   const herstellerRef = useRef();
   const antriebRef = useRef();
   const passagiereRef = useRef();
-  const schildRef = useRef();
   const reichweiteRef = useRef();
 
-  //   const speichern = () =>{
-  //     console.log(idRef.current.value);
-  //     const plane =(
-  //         hersteller: herstellerRef.current.value,
-  //         antriebsart: antriebRef.current.value,
-  //         id: idRef.current.value,
-  //         passagiere: passagiereRef.current.value,
-  //         reichweite: reichweite.current.value
-  //     );
-  // }
+  const save = () => {
+    if (idRef.current.value === "") {
+      return setError(true);
+    } else {
+      // console.log(idRef.current.value);
+      const plane = {
+        hersteller: herstellerRef.current.value,
+        antriebsart: antriebRef.current.value,
+        id: idRef.current.value,
+        passagiere: passagiereRef.current.value,
+        reichweite: reichweiteRef.current.value,
+      };
 
-  const speichern = () => {
-    console.log(idRef.current.value);
+      fetch("http://localhost:9999/api/planes", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(plane),
+      }).then((response) => {
+        if (response.ok) {
+          // leeren der formular wenn der flugzeug gesendet worden ist
+          herstellerRef.current.value = "";
+          antriebRef.current.value = "";
+          idRef.current.value = "";
+          passagiereRef.current.value = "";
+          reichweiteRef.current.value = "";
+          //mit diesen Refresh wird nur das neu geladen, nicht die ganze seite
+          setRefresh((prev) => !prev);
+        }
+      });
+    }
   };
 
   return (
-    <section className="flex flex-col gap-4 bg-gray-400">
-      <div>
+    <section className="flex flex-col justify-center items-center gap-4 mx-24 my-4">
+      <div className="w-[44rem] bg-green-500 p-4 flex justify-between items-center">
         <label htmlFor="planeid">Flugzeugnummernschild</label>
-        <input ref={idRef} type="text" id="planeid" />
+        {error ? (
+          <p className="block text-red-600 align-bottom">
+            "Nummernschild IST notwendig"
+          </p>
+        ) : (
+          ""
+        )}
+        <input
+          className="p-4 rounded-xl"
+          ref={idRef}
+          type="text"
+          id="planeid"
+          required
+        />
       </div>
-      <div>
+      <div className="w-[44rem] bg-green-500 p-4 flex justify-between items-center">
         <label htmlFor="hersteller">Hersteller</label>
-        <input ref={herstellerRef} type="text" id="hersteller" />
+        <input
+          className="p-4 rounded-xl"
+          ref={herstellerRef}
+          type="text"
+          id="hersteller"
+        />
       </div>
-      <div>
+      <div className="w-[44rem] bg-green-500 p-4 flex justify-between items-center">
         <label htmlFor="antrieb">Antriebsart</label>
-        <input ref={antriebRef} type="text" id="antrieb" />
+        <input
+          className="p-4 rounded-xl"
+          ref={antriebRef}
+          type="text"
+          id="antrieb"
+        />
       </div>
-      <div>
+      <div className="w-[44rem] bg-green-500 p-4 flex justify-between items-center">
         <label htmlFor="passagiere">Passagiere</label>
-        <input ref={passagiereRef} type="text" id="passagiere" />
+        <input
+          className="p-4 rounded-xl"
+          ref={passagiereRef}
+          type="text"
+          id="passagiere"
+        />
       </div>
-      <div>
-        <label htmlFor="reichweite">Reichweite</label>
-        <input type="text" id="reichweite" />
-      </div>
-      <div>
-        <label htmlFor="schild">Flugzeugnummernschild</label>
-        <input ref={schildRef} type="text" id="schild" />
-      </div>
-      <div>
+      <div className="w-[44rem] bg-green-500 p-4 flex justify-between items-center">
         <label htmlFor="schild">Reichweite</label>
-        <input ref={reichweiteRef} type="text" id="schild" />
+        <input
+          className="p-4 rounded-xl"
+          ref={reichweiteRef}
+          type="text"
+          id="schild"
+        />
       </div>
-      <div>
-        <button onClick={speichern}>speichern</button>
+      <div className="w-[44rem] bg-green-900 text-yellow-100  p-4 flex justify-center items-center">
+        <button onClick={save}>speichern</button>
       </div>
     </section>
   );
